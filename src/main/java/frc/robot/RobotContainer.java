@@ -7,8 +7,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.TankDrive;
+import frc.robot.commands.TimeAuto;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,7 +27,8 @@ public class RobotContainer {
   private final Joystick _leftJoystick;
   private final Joystick _rightJoystick;
   private final TankDrive _tankDrive;
-
+  private final ArcadeDrive _arcadeDrive;
+  private final TimeAuto _timeAuto;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -33,8 +36,10 @@ public class RobotContainer {
     _leftJoystick = new Joystick(Constants.USBOrder.Zero);
     _rightJoystick = new Joystick(Constants.USBOrder.One);
     _tankDrive = new TankDrive(_driveTrain, _leftJoystick, _rightJoystick);
+    _arcadeDrive = new ArcadeDrive(_driveTrain, _leftJoystick);
+    _timeAuto = new TimeAuto(_driveTrain);
 
-    _driveTrain.setDefaultCommand(_tankDrive);
+    _driveTrain.setDefaultCommand(_arcadeDrive);
 
     configureButtonBindings();
   }
@@ -54,6 +59,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return _timeAuto;
   }
 }
