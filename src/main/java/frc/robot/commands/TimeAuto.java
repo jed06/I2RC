@@ -35,7 +35,7 @@ private DriveTrain driveTrain;
   @Override
   public void execute() {
     if ( timer.get() <= 5){
-      driveTrain.tankDrive(1, 0.5);
+      driveTrain.tankDrive(1, 1);
     }
     if ( timer. get() > 5){
       driveTrain.tankDrive(0, 0);

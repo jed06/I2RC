@@ -4,11 +4,21 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.subsystems.DriveTrain;
 
 public class ArcadeDrive extends CommandBase {
   /** Creates a new ArcadeDrive. */
-  public ArcadeDrive() {
+
+  DriveTrain dt;
+  Joystick j;
+  public ArcadeDrive(DriveTrain drive, Joystick joy ) {
+    dt = drive;
+    j = joy;
+    addRequirements(dt);
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -18,7 +28,10 @@ public class ArcadeDrive extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    dt.arcadeDrive(-0.8 * j.getRawAxis(Constants.JoystickAxis.YAxis),
+                          0.8 * j.getRawAxis(Constants.JoystickAxis.XAxis));
+  }
 
   // Called once the command ends or is interrupted.
   @Override
