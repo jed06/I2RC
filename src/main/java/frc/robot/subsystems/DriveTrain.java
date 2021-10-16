@@ -4,17 +4,27 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-
+import com.kauailabs.navx.frc.AHRS;
 public class DriveTrain extends SubsystemBase {
 
+  
+  private class Drivetrain extends SubsystemBase{
+  }
+
+
+
   private final WPI_TalonSRX _leftDriveTalon;
-  private final WPI_TalonSRX _righttDriveTalon;
+  private final WPI_TalonSRX _rightDriveTalon;
+  private AHRS navx = new AHRS(SPI.Port.kMXP);
+  private double circumference  = 1.6; 
 
   private DifferentialDrive _diffDrive;
 
@@ -22,12 +32,20 @@ public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
   public DriveTrain() {
     _leftDriveTalon = new WPI_TalonSRX(Constants.DriveTrainPorts.LeftDriveTalonPort);
-    _righttDriveTalon = new WPI_TalonSRX(Constants.DriveTrainPorts.RightDriveTalonPort);
+    _rightDriveTalon = new WPI_TalonSRX(Constants.DriveTrainPorts.RightDriveTalonPort);
 
     _leftDriveTalon.setInverted(false);
-    _righttDriveTalon.setInverted(false);
+    _rightDriveTalon.setInverted(false);
 
-    _diffDrive = new DifferentialDrive(_leftDriveTalon, _righttDriveTalon);
+    _diffDrive = new DifferentialDrive(_leftDriveTalon, _rightDriveTalon);
+
+
+    _leftDriveTalon.configFactoryDefault();
+    _leftDriveTalon.setInverted(false);
+    _leftDriveTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+    _rightDriveTalon.configFactoryDefault();
+    _rightDriveTalon.setInverted(false);
+    _rightDriveTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
 
   }
@@ -36,8 +54,32 @@ public class DriveTrain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+  
+  public void resetEncoders(){
+    _leftDriveTalon.setSelectedSensorPosition(0,0,10);
+    _rightDriveTalon.setSelectedSensorPosition(0,0,10);
+  }
 
-  public void tankDrive(double leftSpeed, double rightSpeed) {
+    public void setInverted(){
+    _rightDriveTalon.setSensorPhase(true);
+  }
+
+  public double getPosition(){
+    return (_leftDriveTalon.getSelectedSensorPosition(0) + _rightDriveTalon.getSelectedSensorPosition(0)/2);
+  }
+
+  public double getVelocity(){
+    return (_leftDriveTalon.getSensorCollection().getPulseWidthVelocity() + _rightDriveTalon.getSensorCollection().getPulseWidthVelocity())/2;
+ }
+
+ public double getAngle(){
+   
+ }
+
+ }
+ 
+ 
+ public void tankDrive(double leftSpeed, double rightSpeed) {
     _diffDrive.tankDrive(leftSpeed, rightSpeed);
 
 
