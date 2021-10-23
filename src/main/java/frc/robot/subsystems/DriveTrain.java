@@ -13,18 +13,14 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import com.kauailabs.navx.frc.AHRS;
+
 public class DriveTrain extends SubsystemBase {
-
-  
-  private class Drivetrain extends SubsystemBase{
-  }
-
-
 
   private final WPI_TalonSRX _leftDriveTalon;
   private final WPI_TalonSRX _rightDriveTalon;
   private AHRS navx = new AHRS(SPI.Port.kMXP);
-  private double circumference  = 1.6; 
+  private double circumference  = 1.6;
+  private final int ticksInOneRevolution = 4096; 
 
   private DifferentialDrive _diffDrive;
 
@@ -39,15 +35,12 @@ public class DriveTrain extends SubsystemBase {
 
     _diffDrive = new DifferentialDrive(_leftDriveTalon, _rightDriveTalon);
 
-
     _leftDriveTalon.configFactoryDefault();
     _leftDriveTalon.setInverted(false);
     _leftDriveTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
     _rightDriveTalon.configFactoryDefault();
     _rightDriveTalon.setInverted(false);
     _rightDriveTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-
-
   }
 
   @Override
@@ -65,32 +58,32 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public double getPosition(){
-    return (_leftDriveTalon.getSelectedSensorPosition(0) + _rightDriveTalon.getSelectedSensorPosition(0)/2);
+    return (((_leftDriveTalon.getSelectedSensorPosition(0) + _rightDriveTalon.getSelectedSensorPosition(0))/2)*(circumference/ticksInOneRevolution));
   }
 
   public double getVelocity(){
-    return (_leftDriveTalon.getSensorCollection().getPulseWidthVelocity() + _rightDriveTalon.getSensorCollection().getPulseWidthVelocity())/2;
+    return (((_leftDriveTalon.getSensorCollection().getPulseWidthVelocity() + _rightDriveTalon.getSensorCollection().getPulseWidthVelocity())/2)*(circumference/ticksInOneRevolution));
+ }
+
+ public double getAngleAndReset(){
+   double degrees = navx.getAngle();
+   navx.reset();
+   return degrees;
  }
 
  public double getAngle(){
-   
+   return navx.getAngle(); 
  }
 
+ public void reset(){
+   navx.reset();
  }
- 
  
  public void tankDrive(double leftSpeed, double rightSpeed) {
     _diffDrive.tankDrive(leftSpeed, rightSpeed);
-
-
   }
 
   public void arcadeDrive(double speed, double rotation) {
     _diffDrive.arcadeDrive(speed, rotation);
-
-
   }
-
-
-
 }
