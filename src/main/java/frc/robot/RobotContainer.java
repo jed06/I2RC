@@ -8,9 +8,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.DriveForward;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Path1;
 import frc.robot.commands.TankDrive;
 import frc.robot.commands.TimeAuto;
+import frc.robot.commands.TrianglePath;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,6 +32,8 @@ public class RobotContainer {
   private final TankDrive _tankDrive;
   private final ArcadeDrive _arcadeDrive;
   private final TimeAuto _timeAuto;
+  private final Path1 _path1;
+  private final TrianglePath _trianglePath;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -38,8 +43,9 @@ public class RobotContainer {
     _tankDrive = new TankDrive(_driveTrain, _leftJoystick, _rightJoystick);
     _arcadeDrive = new ArcadeDrive(_driveTrain, _leftJoystick);
     _timeAuto = new TimeAuto(_driveTrain);
-
     _driveTrain.setDefaultCommand(_arcadeDrive);
+    _path1 = new Path1(_driveTrain);
+    _trianglePath = new TrianglePath(_driveTrain);
 
     configureButtonBindings();
   }
@@ -59,6 +65,11 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return _timeAuto;
+    // to make square
+    return _path1;
+    // to make triangle
+    //return _trianglePath;
+    // to use autonomous timer
+    //return _timeAuto;
   }
 }

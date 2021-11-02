@@ -5,15 +5,23 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-
+import frc.robot.subsystems.DriveTrain;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TrianglePath extends SequentialCommandGroup {
-  /** Creates a new TrianglePath. */
-  public TrianglePath() {
+  /** Creates a new DriveForwardSequence. */
+  // PATH FOR MAKING SQUARE
+  public TrianglePath(DriveTrain driveTrain){
+    addCommands(
+                  new DriveForward(driveTrain,30, 0.3),
+                  new Turn (driveTrain, 60, 1),
+                  new DriveForward(driveTrain,30, 0.3),
+                  new Turn (driveTrain, 60, 1),
+                  new DriveForward(driveTrain,30, 0.3));
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands();
+    //super(new DriveForward(driveTrain,30, 0.3));
+    
   }
 }

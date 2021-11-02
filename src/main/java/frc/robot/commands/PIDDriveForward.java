@@ -7,19 +7,20 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
-public class DriveForward extends CommandBase {
+public class PIDDriveForward extends CommandBase {
   /** Creates a new DriveForward. */
   private DriveTrain driveTrain;
   private int distance;
   private double speed;
-  public DriveForward(DriveTrain dt,int distance, double speed) {
+  private double error;
+  public PIDDriveForward(DriveTrain dt,int distance, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.distance = distance;
     this.speed = speed;
     driveTrain = dt;
     addRequirements(driveTrain);
   }
-  public DriveForward(int distance, double speed) {
+  public PIDDriveForward(int distance, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.distance = distance;
     this.speed = speed;
@@ -36,10 +37,22 @@ public class DriveForward extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Robot Position: " + driveTrain.getPosition());
-    if (driveTrain.getPosition() < distance){
-      driveTrain.tankDrive(speed, speed);
+    error = distance - driveTrain.getPosition();
+    error = error / distance;
+    speed = error * 0.7;
+
+    if (speed > 0.7){
+      speed = 0.7;
+
     }
+
+    if (speed < 0.1){
+      speed = 0.1;
+    }
+
+    driveTrain.tankDrive(speed,speed);
+
+
   }
   // Called once the command ends or is interrupted.
   @Override

@@ -11,11 +11,15 @@ import frc.robot.subsystems.DriveTrain;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Path1 extends SequentialCommandGroup {
   /** Creates a new DriveForwardSequence. */
+  // PATH FOR MAKING SQUARE
   public Path1(DriveTrain driveTrain){
+    addCommands(new DriveForward(driveTrain, 5, 0.3));
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-
     //super(new DriveForward(driveTrain,30, 0.3));
-    addCommands(new DriveForward(driveTrain,30, 0.3), new Turn (90));
+    
   }
+
+ 
 }
+

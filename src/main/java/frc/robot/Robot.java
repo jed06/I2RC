@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.DriverStation;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -66,7 +67,40 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+
+    
+    /*
+    String gameData;
+    gameData = DriverStation.getInstance().getGameSpecificMessage();
+    if(gameData != null && gameData.length() > 0){
+      char colorCode = gameData.charAt(0);
+      switch (colorCode){
+        case 'B' :
+        // Blue case code
+        break;
+        case 'G' :
+        // GReen case code
+        break;
+        case 'R' :
+        // Red case code
+        break;
+        case 'Y' :
+        // Yellow case code
+        break;
+        default :
+        // this is corrupt data
+        break;
+      }
+    }
+    else{
+      // code for no  data recived
+    }
+    */
+
+
+
+  }
 
   @Override
   public void teleopInit() {

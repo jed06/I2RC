@@ -19,11 +19,10 @@ public class DriveTrain extends SubsystemBase {
   private final WPI_TalonSRX _leftDriveTalon;
   private final WPI_TalonSRX _rightDriveTalon;
   private AHRS navx = new AHRS(SPI.Port.kMXP);
-  private double circumference  = 1.6;
+  private double circumference  = 47.12; // in centimeters
   private final int ticksInOneRevolution = 4096; 
 
   private DifferentialDrive _diffDrive;
-
 
   /** Creates a new DriveTrain. */
   public DriveTrain() {
@@ -42,6 +41,9 @@ public class DriveTrain extends SubsystemBase {
     _rightDriveTalon.setInverted(false);
     _rightDriveTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
   }
+
+
+
 
   @Override
   public void periodic() {
@@ -81,9 +83,11 @@ public class DriveTrain extends SubsystemBase {
  
  public void tankDrive(double leftSpeed, double rightSpeed) {
     _diffDrive.tankDrive(leftSpeed, rightSpeed);
+
   }
 
   public void arcadeDrive(double speed, double rotation) {
     _diffDrive.arcadeDrive(speed, rotation);
   }
+
 }
